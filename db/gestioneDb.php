@@ -1,22 +1,32 @@
 <?php
-    require_once("conn.php");
-    if(!isset($_SESSION))
-        session_start();
-/*{
-"status": "OK"|"ERR",
-"msg":"", | "dato":""
-}*/
-    $ret = []; 
-    if(!isset($_GET["op"]))
-    {
-        $ret["status"] = "ERR";
-        $ret["msg"] = "manca l'operazione";
-        echo json_encode($ret);
-        die();
-    }
+   
 
-    if($_GET["op"] == "getCt")
-    {
+    class gestioneDb {
+        private static $instance = null;
+        private $conn;
+    
+        private function __construct() {
+            $this->conn = new mysqli("localhost","root","","newshub");
+            if($this->conn->connect_errno)
+                die;
+        }
+    
+        public static function getInstance() {
+            if (self::$instance === null) {
+                self::$instance = new gestioneDb();
+            }
+            return self::$instance;
+        }
 
+        public function getCategories()
+        {
+            $query = "SELECT * FROM categorie";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }
+    
     }
+    
 ?>
