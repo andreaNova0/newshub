@@ -1,8 +1,9 @@
 <script>
-    document.addEventListener("DOMContentLoaded",async function(){
+   document.addEventListener("DOMContentLoaded",async function(){
         
         let news = await getLatestNews("general");
         RenderLatestNews(news);
+        getCategories();
     });
     async function getLatestNews(category)
     {
@@ -15,6 +16,7 @@
     async function RenderLatestNews(news)
     {
         let container = document.getElementById("container");
+        container.innerHTML = "";
         news.forEach(article => {
             const div = document.createElement('div');
             div.className = 'news-item';
@@ -32,8 +34,24 @@
 
     async function getCategories()
     {
-        let responde = await fetch("ajax/operazioni.php?op=getCt");
+        let response = await (await fetch("ajax/operazioni.php?op=getCt")).json();
+        let category = document.getElementById("category-bar");
+        response["data"].forEach(categoria =>{
+            let button = document.createElement("button");
+            button.textContent = categoria["nome"];
+            button.setAttribute("value",categoria["nome"]);
+            button.addEventListener("click",async function(){
+                let cat = this.textContent;
+                document.querySelectorAll('#category-bar button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                let news = await getLatestNews(cat);
+                RenderLatestNews(news);
+            })
+            category.appendChild(button);
+        });
     }
+
+   
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,17 +61,18 @@
     <title>Document</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/styleBottoniCategorie.css">
+    <link rel="stylesheet" href="styles/barraRicerca.css">
 </head>
 <body>
-<nav id="category-bar">
-  <button data-category="general" class="active">Tutte</button>
-  <button data-category="business">Business</button>
-  <button data-category="technology">Tecnologia</button>
-  <button data-category="entertainment">Intrattenimento</button>
-  <button data-category="health">Salute</button>
-  <button data-category="science">Scienza</button>
-  <button data-category="sports">Sport</button>
-</nav>
+
+    <div id="search-bar">
+        <input type="text" id="search-input" placeholder="Cerca notizie...">
+        <button id="search-button">Cerca</button>
+    </div>
+
+    <nav id="category-bar">
+    
+    </nav>
 
     <div id="container">
 

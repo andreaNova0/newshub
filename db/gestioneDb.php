@@ -23,8 +23,14 @@
             $query = "SELECT * FROM categorie";
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
-            $result = $stmt->fetch();
-            return $result;
+            $result = $stmt->get_result();
+        
+            $categories = [];
+            while ($row = $result->fetch_assoc()) {
+                $categories[] = $row;
+            }
+        
+            return $categories;
         }
     
     }
