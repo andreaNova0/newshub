@@ -1,0 +1,26 @@
+#top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: transparent; /* tolto il bianco */
+    border: none; /* tolto il bordo */
+    margin-bottom: 1.5rem;
+  }
+  
+  #login-button {
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  #login-button:hover {
+    background-color: #218838;
+  }
+  
