@@ -59,9 +59,33 @@
 }
 
 .error-message {
-  color: red;
+  color: #dc3545; /* Colore del testo */
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 10px;
-  display: block;
+  padding: 10px;
+  background-color: #fcc7cc; /* Tonalità più chiara di rosso */
+  border: 1px solid #dc3545; /* Bordo rosso scuro */
+  border-radius: 8px; /* Angoli arrotondati */
+  text-align: center; /* Testo centrato */
+  display: none; /* Nascondi di default */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi un'ombra */
+}
+
+.register-container {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.register-container:hover {
+  background-color: #0056b3;
 }

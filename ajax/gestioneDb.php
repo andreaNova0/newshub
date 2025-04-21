@@ -138,7 +138,45 @@
         {
             return $this->conn->insert_id;
         }
+
+        public function getNomeCognomeUtente($id_utente)
+        {
+            $query = "SELECT nome,cognome FROM utenti WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("i", $id_utente);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if($result->num_rows == 1)
+            {
+                $row = $result->fetch_assoc();
+                return ["nome" => $row["nome"], "cognome" => $row["cognome"]];
+            }
+            else
+                return null;
+        }
            
+        public function checkSavedNews($id_utente, $title, $description, $url, $urlToImage)
+        {
+            $query = "SELECT N.* FROM notizie N
+            JOIN utenti_notizie UN ON UN.id_notizia = N.id
+            JOIN utenti U ON U.id = UN.id_utente 
+            WHERE N.titolo = ? AND 
+            N.descrizione = ? AND
+            N.urlToImage = ? AND
+            N.url = ? AND
+            U.id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssssi", $title, $description, $urlToImage, $url,$id_utente);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if($result->num_rows == 0)
+                return false;
+            else
+                return true;
+        }
+       
         
     
     }

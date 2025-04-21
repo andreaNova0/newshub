@@ -1,0 +1,53 @@
+#top-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Spinge login/profile a destra */
+  padding: 10px 10px;
+  height: 200px; /* Fissa un'altezza per evitare salti */
+}
+
+.logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.profile-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  margin-right: 20px;
+}
+
+.profile-icon:hover {
+  transform: scale(1.1);
+}
+
+.action-container {  
+  font-family: Arial, sans-serif;
+  padding: 0.5rem 1rem;
+  background-color: #28a745;
+  color: white;
+  font-weight: 500;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  text-align: center;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.action-container:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.site-logo {
+  max-height: 200px;
+  width: auto;
+}

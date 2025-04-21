@@ -17,6 +17,9 @@ body {
   width: 100%;
   max-width: 400px;
   text-align: center;
+  display: flex;
+  flex-direction: column; /* Disposizione verticale degli elementi */
+  align-items: center; /* Centra gli elementi orizzontalmente */
 }
 
 .form-wrapper h2 {
@@ -26,7 +29,7 @@ body {
 }
 
 .form-wrapper input {
-  width: 100%;
+  width: 90%; /* Riduci leggermente la larghezza per centrare meglio */
   padding: 12px;
   margin: 10px 0;
   border: 1px solid #ccc;
@@ -42,7 +45,7 @@ body {
 }
 
 .form-wrapper button {
-  width: 100%;
+  width: 90%; /* Stessa larghezza degli input */
   padding: 12px;
   background-color: #4a90e2;
   color: white;
@@ -73,10 +76,16 @@ body {
 }
 
 .error-message {
-  color: red;
+  color: #dc3545; /* Colore del testo */
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 10px;
-  display: block;
+  padding: 10px;
+  background-color: #fcc7cc; /* Tonalità più chiara di rosso */
+  border: 1px solid #dc3545; /* Bordo rosso scuro */
+  border-radius: 8px; /* Angoli arrotondati */
+  text-align: center; /* Testo centrato */
+  display: none; /* Nascondi di default */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Aggiungi un'ombra */
 }
 

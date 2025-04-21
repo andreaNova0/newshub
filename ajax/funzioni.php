@@ -2,7 +2,7 @@
     require_once("gestioneDb.php");
     if(!isset($_SESSION))
         session_start();
-
+ 
     function errorOperation()
     {
         $ret = [];
@@ -19,46 +19,7 @@
         $ret["data"] = $data;
         return $ret;
     }
-    function getLogin()
-    {
-        $ret = [];
-        $ret[ "status"] = "OK";
-        $ret["data"] = '
-        <link rel="stylesheet" href="styles/login.css"> 
-        <div class="form-wrapper">
-            <h2>Login</h2>
-            <div id="login-error" class="error-message"></div>
 
-            <input type="email" id="login-email" placeholder="Email">
-            <input type="password" id="login-password" placeholder="Password">
-            <button onclick="login()">Accedi</button>
-
-            <p>Non hai un account? </p>
-            <button onclick="RenderRegistrazione()">Registrati</button>
-        </div>'
-        ;
-        return $ret;    
-    }
-    function getRegist()
-    {        
-        $ret = [];
-        $ret[ "status"] = "OK";
-        $ret["data"] = '
-        <link rel="stylesheet" href="styles/registrazione.css">
-         <div class="form-wrapper">
-            <h2>Registrazione</h2>
-            <div id="register-error" class="error-message"></div>
-            <input type="text" id="nome" placeholder="Nome">
-            <input type="text" id="cognome" placeholder="Cognome">
-            <input type="email" id="register-email" placeholder="Email">
-            <input type="password" id="register-password" placeholder="Password">
-            <input type="password" id="confirm-password" placeholder="Conferma Password">
-            <button onclick="registrazione()">Registrati</button>
-
-        </div>
-        ';
-        return $ret;
-    }
     function registrazione()
     {
         $ret = [];
@@ -187,7 +148,7 @@
        
     }
 
-    function saveNews($title, $description, $url, $urlToImage)
+    function saveNews($title, $description, $url, $urlToImage)  //da sistemare
     {
         $ret = [];
        
@@ -276,6 +237,67 @@
 
     }
 
+    function getNomeCognomeUtente()
+    {
+        $ret = [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Si è verificato un errore!";
+            return $ret;
+        }
+        $db = gestioneDb::getInstance();
+        $result = $db->getNomeCognomeUtente($_SESSION["user"]);
+        if($result != null)
+        {
+            $ret["status"] = "OK";
+            $ret["data"] = $result;
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Errore durante il recupero del nome e cognome.";
+        }
+        return $ret;
+    }
 
+    function checkSavedNews()
+    {
+        $ret= [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Devi essere loggato per controllare se la notizia è già salvata!";
+            return $ret;
+        }
+
+        if(!isset($_GET["title"], $_GET["description"], $_GET["url"], $_GET["urlToImage"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }    
+        if(empty($_GET["title"]) || empty($_GET["description"]) || empty($_GET["url"]) || empty($_GET["urlToImage"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }   
+        
+        
+        $db = gestioneDb::getInstance();
+        $result = $db->checkSavedNews($_SESSION["user"], $_GET["title"], $_GET["description"], $_GET["url"], $_GET["urlToImage"]);
+        if($result)
+        {
+            $ret["status"] = "OK";
+            $ret["msg"] = "Notizia già salvata.";
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Notizia non salvata.";
+        }
+        return $ret;
+    }
 
 ?>

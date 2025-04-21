@@ -4,7 +4,7 @@
         session_start();
 
     if(!isset($_GET["op"]))
-    {
+    { 
         echo json_encode(errorOperation());
         die();
     }
@@ -13,12 +13,6 @@
         case 'getCt':
             echo json_encode(getCt());
             die();   
-        case 'getLogin':
-            echo json_encode(getLogin());
-            die();
-        case 'getRegist':
-            echo json_encode(getRegist());
-            die();
         case 'registrazione':
             echo json_encode(registrazione());
             die();
@@ -34,7 +28,13 @@
             exit;
         case 'salvaNotizia':
             echo json_encode(saveNews($_GET["title"],$_GET["description"],$_GET["url"],$_GET["urlToImage"]));
-            die();        
+            die();   
+        case 'getNomeCognome':
+            echo json_encode(getNomeCognomeUtente());      
+            die(); 
+        case 'checkSavedNews':
+            echo json_encode(checkSavedNews());
+            die();     
         default:
             echo json_encode(errorOperation());
             die();

@@ -6,19 +6,36 @@ if (!isset($_SESSION["user"])) {
 }
 ?>
 
+<script>
+  document.addEventListener("DOMContentLoaded",async function() {
+    await getNomeCognomeUtente();
+  });
+
+  async function getNomeCognomeUtente()
+  {
+    let response = await fetch("ajax/richieste.php?op=getNomeCognome");
+    let result = await response.json();
+    if(result["status"] == "OK")
+    {
+        let nome = result["data"]["nome"];
+        let cognome = result["data"]["cognome"];
+        document.querySelector(".welcome-message").innerHTML = `Benvenuto, ${nome} ${cognome}!`;
+    }
+  }
+</script>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Area Personale</title>
-    <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/area_personale.css">
 </head>
 <body>
 <?php include("header.php"); ?>	
 
     <div class="dashboard-container">
-  <h2 class="welcome-message">Benvenuto, <?= $_SESSION["user"] ?>!</h2>
+  <h2 class="welcome-message"></h2>
 
   <div class="dashboard-cards">
     <!-- Modifica profilo -->
@@ -37,7 +54,7 @@ if (!isset($_SESSION["user"])) {
   </div>
 
   <div class="go-home">
-    <a href="home.php">Torna alla Home</a>
+    <a href="index.php">Torna alla Home</a>
   </div>
 </div>
 </body>
