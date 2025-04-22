@@ -38,14 +38,12 @@ if (!isset($_SESSION["user"])) {
   <h2 class="welcome-message"></h2>
 
   <div class="dashboard-cards">
-    <!-- Modifica profilo -->
     <div class="dashboard-card">
       <h3>Il mio profilo</h3>
       <p>Modifica le tue informazioni personali o la password.</p>
       <button class="primary-btn" onclick="modificaProfilo()">Modifica profilo</button>
     </div>
 
-    <!-- Notizie salvate -->
     <div class="dashboard-card">
       <h3>Le mie notizie salvate</h3>
       <p>Consulta l'elenco delle notizie che hai salvato.</p>

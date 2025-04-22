@@ -300,4 +300,55 @@
         return $ret;
     }
 
+    function deleteSavedNews()
+    {
+        $ret = [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Devi essere loggato per eliminare una notizia salvata!";
+            return $ret;
+        }
+       if(!isset($_GET["title"], $_GET["description"], $_GET["url"], $_GET["urlToImage"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+        else if(empty($_GET["title"]) || empty($_GET["description"]) || empty($_GET["url"]) || empty($_GET["urlToImage"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+        
+        $db = gestioneDb::getInstance();
+
+        $id_notizia = $db->getIdNews($_GET["title"], $_GET["description"], $_GET["url"], $_GET["urlToImage"]);
+        if($id_notizia == -1)
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Notizia non trovata.";
+            return $ret;
+        }
+        if(!$db->isNewsAndUtentePresente($id_notizia, $_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Notizia non trovata.";
+            return $ret;
+        }
+        if($db->deleteSavedNews($_SESSION["user"], $id_notizia))
+        {
+            $ret["status"] = "OK";
+            $ret["msg"] = "Notizia eliminata con successo!";
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Errore durante l'eliminazione della notizia.";
+        }
+
+        return $ret;
+    }
+
 ?>

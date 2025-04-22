@@ -176,7 +176,36 @@
             else
                 return true;
         }
-       
+
+        function deleteSavedNews($id_utente, $id_notizia)
+        {
+            $query = "DELETE FROM utenti_notizie WHERE id_utente = ? AND id_notizia = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ii", $id_utente, $id_notizia);
+            if($stmt->execute())
+                return true;
+            else
+                return false;
+        }
+
+        function getIdNews($title, $description, $url, $urlToImage)
+        {
+            $query = "SELECT id FROM notizie WHERE titolo = ? AND descrizione = ? AND url = ? AND urlToImage = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssss", $title, $description, $url, $urlToImage);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if($result->num_rows == 1)
+            {
+                $row = $result->fetch_assoc();
+                return $row["id"]; 
+            }
+            else
+                return -1;
+        }
+        
+        
         
     
     }

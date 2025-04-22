@@ -35,7 +35,6 @@ async function RenderLatestNews(news)
         if (isLogged) {
             let response = await fetch(`ajax/richieste.php?op=checkSavedNews&title=${article.title}&description=${article.description}&url=${article.url}&urlToImage=${article.urlToImage}`);
             let result = await response.json();
-            // opzionale: puoi decidere di mostrare il bottone solo se la notizia NON è già salvata
             if (result["status"] != "OK") {
                 saveButton = `
                     <button class="save-btn" onclick="salvaNotizia(
@@ -49,7 +48,12 @@ async function RenderLatestNews(news)
             else if(result["status"] == "OK")
             {
                 saveButton = `
-                    <button class="save-btn" disabled>Rimuovi dai preferiti</button>
+                       <button class="save-btn" onclick="eliminaNotizia(
+                      \`${article.title}\`,
+                      \`${article.description}\`,
+                      \`${article.url}\`,
+                      \`${article.urlToImage}\`
+                    )">Rimuovi dai preferiti</button>
                 `;
             }
 
@@ -176,5 +180,28 @@ async function getAreaPersonale()
         let result = await response.json();
         if(result["status"] == "OK")
             document.getElementById("pagina").innerHTML = result["data"];
+    }
+}
+
+async function eliminaNotizia(title,description,url,urlToImage)
+{
+    let isLogged = await checkLog();
+    if(!isLogged)
+    {
+        alert("Devi essere loggato per rimuovere le notizie salvate!");
+        return;
+    }
+    else
+    {
+        let response = await fetch(`ajax/richieste.php?op=eliminaNotizia&title=${title}&description=${description}&url=${url}&urlToImage=${urlToImage}`);
+        let result = await response.json();
+        if(result["status"] == "OK")
+        {
+            alert("Notizia rimossa con successo!");
+        }
+        else
+        {
+            alert("Errore durante la rimozione della notizia: " + result["msg"]);
+        }
     }
 }
