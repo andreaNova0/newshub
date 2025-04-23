@@ -77,4 +77,162 @@
   .go-home a:hover {
     text-decoration: underline;
   }
+
+  /* Container principale */
+#container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Card singola */
+.news-item {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Immagine */
+.news-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+/* Titolo */
+.news-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+/* Descrizione */
+.news-item p {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Link */
+.news-item a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.news-item a:hover {
+  text-decoration: underline;
+}
+
+.save-btn {
+  background: none;
+  border: 1px solid #28a745;
+  color: #28a745;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+.save-btn:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.save-btn:active {
+  transform: scale(0.97);
+}
   
+  
+
+
+
+
+.form-container {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #444;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.form-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.95); /* leggera opacità */
+  z-index: 1000;
+}

@@ -83,7 +83,7 @@
 
         public function isNewsPresente($news)
         {
-            $query = "SELECT * FROM notizie WHERE titolo = ? AND descrizione = ? AND url = ? AND urlToImage = ?";
+            $query = "SELECT * FROM notizie WHERE title = ? AND description = ? AND url = ? AND urlToImage = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("ssss", $news["title"], $news["description"], $news["url"], $news["urlToImage"]);
             $stmt->execute();
@@ -125,7 +125,7 @@
 
         public function saveNews($news)
         {
-            $query = "INSERT INTO notizie (titolo,descrizione,url,urlToImage) VALUES (?,?,?,?)";
+            $query = "INSERT INTO notizie (title,description,url,urlToImage) VALUES (?,?,?,?)";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("ssss", $news["title"], $news["description"], $news["url"], $news["urlToImage"]);
             if($stmt->execute())
@@ -161,8 +161,8 @@
             $query = "SELECT N.* FROM notizie N
             JOIN utenti_notizie UN ON UN.id_notizia = N.id
             JOIN utenti U ON U.id = UN.id_utente 
-            WHERE N.titolo = ? AND 
-            N.descrizione = ? AND
+            WHERE N.title = ? AND 
+            N.description = ? AND
             N.urlToImage = ? AND
             N.url = ? AND
             U.id = ?";
@@ -190,7 +190,7 @@
 
         function getIdNews($title, $description, $url, $urlToImage)
         {
-            $query = "SELECT id FROM notizie WHERE titolo = ? AND descrizione = ? AND url = ? AND urlToImage = ?";
+            $query = "SELECT id FROM notizie WHERE title = ? AND description = ? AND url = ? AND urlToImage = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("ssss", $title, $description, $url, $urlToImage);
             $stmt->execute();
@@ -203,6 +203,29 @@
             }
             else
                 return -1;
+        }
+
+        function getSavedNews($id_utente)
+        {
+            $query = "SELECT N.* FROM notizie N
+            JOIN utenti_notizie UN ON UN.id_notizia = N.id
+            WHERE UN.id_utente = ?
+            ORDER BY n.id DESC";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("i", $id_utente);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if($result->num_rows == 0)
+                return null;
+            else
+            {
+                $notizie = [];
+                while ($row = $result->fetch_assoc()) {
+                    $notizie[] = $row;
+                }
+                return $notizie;
+            }
         }
         
         

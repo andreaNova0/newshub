@@ -2,6 +2,12 @@
     if(!isset($_SESSION))
         session_start();
 ?>
+<script>
+    
+document.addEventListener("DOMContentLoaded",async function(){
+    await getHomePage();
+}); 
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +29,7 @@
 
         <div id="search-bar">
             <input type="text" id="search-input" placeholder="Cerca notizie...">
-            <button id="search-button" onclick="getAreaPersonale()">Cerca</button>
+            <button id="search-button" onclick="cerca()">Cerca</button>
         </div>
 
         <div id="search-error" class="error-message" style="display: none;"></div>

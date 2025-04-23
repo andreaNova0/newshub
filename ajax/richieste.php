@@ -38,6 +38,9 @@
         case 'eliminaNotizia':
             echo json_encode(deleteSavedNews());
             die();
+        case 'getSavedNews':
+            echo json_encode(getSavedNews());
+            die(); 
         default:
             echo json_encode(errorOperation());
             die();

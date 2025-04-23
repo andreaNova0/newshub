@@ -351,4 +351,28 @@
         return $ret;
     }
 
+    function getSavedNews()
+    {
+        $ret = [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Devi essere loggato per visualizzare le notizie salvate!";
+            return $ret;
+        }
+        $db = gestioneDb::getInstance();
+        $result = $db->getSavedNews($_SESSION["user"]);
+        if($result != null)
+        {
+            $ret["status"] = "OK";
+            $ret["data"] = $result;
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Nessuna notizia salvata.";
+        }
+        return $ret;
+    }
+
 ?>

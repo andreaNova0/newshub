@@ -11,7 +11,7 @@
     let result = await response.json();
     if(result["status"] == "OK")
     {
-        location.reload();
+        window.location.href = "index.php";
     }
     else
     {
