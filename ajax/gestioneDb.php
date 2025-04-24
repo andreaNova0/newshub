@@ -225,7 +225,46 @@
                     $notizie[] = $row;
                 }
                 return $notizie;
-            }
+          }
+        }
+        
+        function modificaDatiPersonali($id_utente,$nome,$cognome)
+        {
+            $query = "UPDATE utenti SET nome = ?, cognome = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssi", $nome, $cognome, $id_utente);
+            if($stmt->execute())
+                return true;
+            else
+                return false;
+        }
+
+        function cambiaPassword($id_utente,$Newpassword)
+        {
+           $query = "UPDATE utenti SET password = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $pass = md5($Newpassword);
+            $stmt->bind_param("si", $pass, $id_utente);
+            if($stmt->execute())
+                return true;
+            else
+                return false;
+         
+        }
+
+        function checkPassword($id_utente,$password)
+        {
+            $query = "SELECT password FROM utenti WHERE id = ? AND password = ?";
+            $stmt = $this->conn->prepare($query);
+            $pass = md5($password);
+            $stmt->bind_param("is", $id_utente, $pass);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if($result->num_rows == 1)
+                return true;
+            else
+                return false;
         }
         
         

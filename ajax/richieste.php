@@ -41,6 +41,12 @@
         case 'getSavedNews':
             echo json_encode(getSavedNews());
             die(); 
+        case 'modificaDatiPersonali':
+            echo json_encode(modificaDatiPersonali());
+            die();
+        case 'cambiaPassword':
+            echo json_encode(cambiaPassword());
+            die();
         default:
             echo json_encode(errorOperation());
             die();

@@ -375,4 +375,96 @@
         return $ret;
     }
 
+    function modificaDatiPersonali()
+    {
+        $ret = [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Devi essere loggato per modificare il profilo!";
+            return $ret;
+        }
+        if(!isset($_GET["nome"], $_GET["cognome"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+        else if(empty($_GET["nome"]) || empty($_GET["cognome"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+        
+        $db = gestioneDb::getInstance();
+        $result = $db->modificaDatiPersonali($_SESSION["user"], $_GET["nome"], $_GET["cognome"]);
+        if($result == true)
+        {
+            $ret["status"] = "OK";
+            $ret["msg"] = "Modifica avvenuta con successo!";
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Errore durante la modifica del profilo.";
+        }
+        
+        return $ret;
+       
+
+    }
+
+    function cambiaPassword()
+    {
+        $ret = [];
+        if(!isset($_SESSION["user"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Devi essere loggato per cambiare la password!";
+            return $ret;
+        }
+        if(!isset($_GET["oldPassword"], $_GET["newPassword"], $_GET["confirmPassword"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+        else if(empty($_GET["oldPassword"]) || empty($_GET["newPassword"]) || empty($_GET["confirmPassword"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "mancano i parametri";
+            return $ret;
+        }
+
+        $db = gestioneDb::getInstance();
+        if(!$db->checkPassword($_SESSION["user"], $_GET["oldPassword"]))
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Password errata.";
+            return $ret;
+        }
+        
+        if($_GET["newPassword"] != $_GET["confirmPassword"])
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "le password non coincidono";
+            return $ret;
+        }
+        
+        $result = $db->cambiaPassword($_SESSION["user"], $_GET["newPassword"]);
+        if($result == true)
+        {
+            $ret["status"] = "OK";
+            $ret["msg"] = "Modifica avvenuta con successo!";
+        }
+        else
+        {
+            $ret["status"] = "ERR";
+            $ret["msg"] = "Errore durante la modifica della password.";
+        }
+        
+        return $ret;
+    }
+
 ?>

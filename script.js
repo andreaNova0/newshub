@@ -111,18 +111,19 @@ async function cerca()
     
     if(!isLogged)
     {
-        let div = document.getElementById("search-error");
-        div.style.display = "block";
-
-        div.innerHTML = "Devi essere loggato per cercare notizie!";
-        return;
+       mostraAlert("Devi essere loggato per cercare notizie!");
     }
     else
     {
         let query = document.getElementById("search-input").value;
-    let response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=62aef4d314c54abca43e41856141a930`);
-    let news = await response.json();
-    await RenderLatestNews(news["articles"]); 
+        if(query == "")
+        {
+            mostraAlert("Devi inserire almeno un parola!");
+            return;
+        }
+        let response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=62aef4d314c54abca43e41856141a930`);
+        let news = await response.json();
+        await RenderLatestNews(news["articles"]); 
     }
     
 }
@@ -175,7 +176,7 @@ async function salvaNotizia(title, description, url, urlToImage, button, salvaHa
         button.removeEventListener('click', salvaHandler);
         button.addEventListener('click', eliminaHandler);
     } else {
-        alert("Errore durante il salvataggio della notizia: " + result["msg"]);
+        mostraAlert("Errore durante il salvataggio della notizia: " + result["msg"]);
     }
 }
 async function getAreaPersonale()
@@ -183,8 +184,7 @@ async function getAreaPersonale()
     let isLogged = await checkLog();
     if(!isLogged)
     {
-        alert("Devi essere loggato per accedere all'area personale!");
-        return;
+        mostraAlert("Devi essere loggato per accedere all'area personale!");
     }
     else
     {
@@ -198,7 +198,7 @@ async function getAreaPersonale()
 async function eliminaNotizia(title, description, url, urlToImage, button, salvaHandler, eliminaHandler) {
     const isLogged = await checkLog();
     if (!isLogged) {
-        alert("Devi essere loggato per rimuovere le notizie salvate!");
+        mostraAlert("Devi essere loggato per rimuovere le notizie salvate!");
         return;
     }
 
@@ -210,7 +210,7 @@ async function eliminaNotizia(title, description, url, urlToImage, button, salva
         button.removeEventListener('click', eliminaHandler);
         button.addEventListener('click', salvaHandler);
     } else {
-        alert("Errore durante la rimozione della notizia: " + result["msg"]);
+        mostraAlert("Errore durante la rimozione della notizia: " + result["msg"]);
     }
 }
 
@@ -219,8 +219,7 @@ async function getNotizieSalvate()
     let isLogged = await checkLog();
     if(!isLogged)
     {
-        alert("Devi essere loggato per accedere alle notizie salvate!");
-        return;
+        mostraAlert("Devi essere loggato per accedere alle notizie salvate!");
     }
     else
     {
@@ -240,7 +239,7 @@ async function getModificaProfilo()
     let isLogged = await checkLog();
     if(!isLogged)
     {
-        alert("Devi essere loggato per accedere alla modifica del profilo!");
+        mostraAlert("Devi essere loggato per accedere alla modifica del profilo!");
         return;
     }
     else
@@ -269,4 +268,70 @@ async function getDatiUtente()
             document.getElementById("cognome").value = result["data"]["cognome"];
         }
     }
+}
+async function modificaDatiPersonali()
+{
+    let isLogged = await checkLog();
+    if(!isLogged)
+    {
+        mostraAlert("Devi essere loggato per accedere alla modifica del profilo!");
+    }
+    else
+    {
+        let nome = document.getElementById("nome").value;
+        let cognome = document.getElementById("cognome").value;
+        let response = await fetch(`ajax/richieste.php?op=modificaDatiPersonali&nome=${nome}&cognome=${cognome}`);
+        let result = await response.json();
+        if(result["status"] == "OK")
+        {            
+            location.reload();
+            mostraAlert("Modifica avvenuta con successo!");
+        }
+        else
+        {
+            mostraAlert("Errore durante la modifica dei dati: " + result["msg"]);
+        }
+    }
+}
+
+async function cambiaPassword()
+{
+    let isLogged = await checkLog();
+    if(!isLogged)
+    {
+        alert("Devi essere loggato per accedere alla modifica del profilo!");
+        return;
+    }
+    else
+    {
+        let vecchiaPassword = document.getElementById("old-password").value;
+        let password = document.getElementById("password").value;
+        let newPassword = document.getElementById("confirm-password").value;
+        let response = await fetch(`ajax/richieste.php?op=cambiaPassword&newPassword=${password}&confirmPassword=${newPassword}&oldPassword=${vecchiaPassword}`);
+        let result = await response.json();
+        if(result["status"] == "OK")
+        {
+            alert("Modifica avvenuta con successo!");
+            location.reload();
+        }
+        else
+        {
+            mostraAlert("Errore durante la modifica della password: " + result["msg"]);
+        }
+    }
+}
+
+function nascondiAlert()
+{
+    const alertBox = document.getElementById("alert-message");
+    alertBox.style.display = "none";
+    alertBox.classList.remove("show");
+}
+
+function mostraAlert(messaggio) 
+{
+    const alertBox = document.getElementById("alert-message");
+    document.getElementById("testoError").innerText = messaggio;
+    alertBox.style.display = "block";
+    alertBox.classList.add("show");
 }

@@ -166,6 +166,15 @@
 
 
 
+/* Wrapper per centrare il form verticalmente e orizzontalmente */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Container vero e proprio del form */
 .form-container {
   background-color: #fff;
   padding: 2rem;
@@ -175,20 +184,22 @@
   max-width: 400px;
 }
 
-h2 {
+/* Titolo */
+.form-container h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #333;
 }
 
-label {
+/* Etichette e input */
+.form-container label {
   display: block;
   margin-bottom: 0.3rem;
   color: #444;
   font-weight: bold;
 }
 
-input {
+.form-container input {
   width: 100%;
   padding: 0.6rem;
   margin-bottom: 1rem;
@@ -197,12 +208,13 @@ input {
   transition: border 0.3s;
 }
 
-input:focus {
+.form-container input:focus {
   border-color: #007bff;
   outline: none;
 }
 
-.btn {
+/* Bottoni */
+.form-container .btn {
   width: 100%;
   padding: 0.75rem;
   background-color: #007bff;
@@ -212,27 +224,31 @@ input:focus {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-bottom: 1rem;
 }
 
-.btn:hover {
+.form-container .btn:hover {
   background-color: #0056b3;
 }
 
+/* Messaggi di errore */
 .error {
   color: red;
   font-size: 0.85rem;
   margin-bottom: 1rem;
 }
 
-.form-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.95); /* leggera opacità */
-  z-index: 1000;
+/* Alert Bootstrap (se usi Bootstrap) */
+.alert {
+  margin-bottom: 1rem;
+}
+/* Responsività su schermi piccoli */
+@media (max-width: 500px) {
+  .form-container {
+    padding: 1.2rem;
+  }
+
+  .form-wrapper {
+    padding: 1rem;
+  }
 }
