@@ -12,17 +12,7 @@ if (!isset($_SESSION["user"])) {
     await getDatiUtente();
   });
 
-  async function getNomeCognomeUtente()
-  {
-    let response = await fetch("ajax/richieste.php?op=getNomeCognome");
-    let result = await response.json();
-    if(result["status"] == "OK")
-    {
-        let nome = result["data"]["nome"];
-        let cognome = result["data"]["cognome"];
-        document.querySelector(".welcome-message").innerHTML = `Benvenuto, ${nome} ${cognome}!`;
-    }
-  }
+
 </script>
 
 <!DOCTYPE html>

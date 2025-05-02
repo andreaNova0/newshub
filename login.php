@@ -1,22 +1,14 @@
+<?php
+    if(!isset($_SESSION)) 
+        session_start(); 
+    if(isset($_SESSION["user"]))
+    {
+        header("Location: index.php");
+        exit();
+    }
+?>
 <script>
-    async function login()
-{
-    let email = document.getElementById("login-email").value;
-    let password = document.getElementById("login-password").value;
 
-    let response = await fetch(`ajax/richieste.php?op=login&email=${email}&password=${password}`);
-    let result = await response.json();
-    if(result["status"] == "OK")
-    {
-        window.location.href = "index.php";
-    }
-    else
-    {
-        let errorDiv = document.getElementById("login-error");
-        errorDiv.innerHTML = result["msg"];
-        errorDiv.style.display = "block";
-    }
-}
 </script>
 <!DOCTYPE html>
 <html lang="en">

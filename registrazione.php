@@ -1,27 +1,14 @@
+<?php
+    if(!isset($_SESSION)) 
+        session_start(); 
+    if(isset($_SESSION["user"]))
+    {
+        header("Location: index.php");
+        exit();
+    }
+?>
 <script>
-    async function registrazione()
-{
-    let nome = document.getElementById("nome").value;
-    let cognome = document.getElementById("cognome").value;
-    let email = document.getElementById("register-email").value;
-    let password = document.getElementById("register-password").value;
-    let confirmPassword = document.getElementById("confirm-password").value;
 
-    let response = await fetch(`ajax/richieste.php?op=registrazione&nome=${nome}&cognome=${cognome}&email=${email}&password=${password}&confirmPassword=${confirmPassword}`);
-    let result = await response.json();
-    if(result["status"] == "OK")
-    {
-        window.location.href = "index.php";
-    }
-    else
-    {
-        let errorDiv = document.getElementById("register-error");
-        errorDiv.innerHTML = result["msg"];
-        errorDiv.style.display = "block";
-    }
-    
-    
-}
 </script>
 <!DOCTYPE html>
 <html lang="en">

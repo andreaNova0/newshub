@@ -10,7 +10,8 @@ async function getHomePage()
 async function getLatestNews(category)
 {
     let response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=62aef4d314c54abca43e41856141a930&category=${category}&pageSize=100`);
-    let latestNews = await response.json();
+    let txt = await response.text();
+    latestNews = JSON.parse(txt);
 
     return latestNews["articles"];
 }
@@ -21,7 +22,8 @@ async function RenderLatestNews(news)
     container.innerHTML = "";
 
     let checkResponse = await fetch("ajax/richieste.php?op=checkLog");
-    let check = await checkResponse.json();
+    let txt = await checkResponse.text();
+    let check = JSON.parse(txt);
     let isLogged = check.logged;
 
     for (const article of news) {
@@ -45,8 +47,8 @@ async function RenderLatestNews(news)
     
         if (isLogged) {
             const response = await fetch(`ajax/richieste.php?op=checkSavedNews&title=${encodeURIComponent(article.title)}&description=${encodeURIComponent(article.description)}&url=${encodeURIComponent(article.url)}&urlToImage=${encodeURIComponent(article.urlToImage)}`);
-            const result = await response.json();
-    
+            const txt = await response.text();
+            const result = JSON.parse(txt);
             if (result["status"] !== "OK") {
                 button.textContent = 'Aggiungi ai preferiti';
                 button.addEventListener('click', salvaHandler);
@@ -72,8 +74,9 @@ async function RenderLatestNews(news)
 
 async function getCategories()
 {
-    let response = await (await fetch("ajax/richieste.php?op=getCt")).json();
+    let txt = await (await fetch("ajax/richieste.php?op=getCt")).text();
     let category = document.getElementById("category-bar");
+    let response = JSON.parse(txt);
     response["data"].forEach(categoria =>{
         let button = document.createElement("button");
         button.textContent = categoria["nome"];
@@ -92,7 +95,8 @@ async function getCategories()
 async function logout()
 {
     let response = await fetch("ajax/richieste.php?op=logout");
-    let result = await response.json();
+    let txt = await response.text();
+    let result = JSON.parse(txt);
     if(result["status"] == "OK")
     {
         location.reload();
@@ -122,7 +126,8 @@ async function cerca()
             return;
         }
         let response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=62aef4d314c54abca43e41856141a930`);
-        let news = await response.json();
+        let txt = await response.text();
+        let news = JSON.parse(txt);
         await RenderLatestNews(news["articles"]); 
     }
     
@@ -131,7 +136,8 @@ async function cerca()
 async function checkLog()
 {
     let checkResponse = await fetch("ajax/richieste.php?op=checkLog");
-    let check = await checkResponse.json();
+    let txt = await checkResponse.text();
+    let check = JSON.parse(txt);
     let isLogged = check.logged;
     return isLogged;
     
@@ -169,8 +175,8 @@ async function salvaNotizia(title, description, url, urlToImage, button, salvaHa
     }
 
     const response = await fetch(`ajax/richieste.php?op=salvaNotizia&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&url=${encodeURIComponent(url)}&urlToImage=${encodeURIComponent(urlToImage)}`);
-    const result = await response.json();
-
+    const txt = await response.text();
+    const result = JSON.parse(txt);
     if (result["status"] === "OK") {
         button.textContent = "Rimuovi dai preferiti";
         button.removeEventListener('click', salvaHandler);
@@ -189,7 +195,8 @@ async function getAreaPersonale()
     else
     {
         let response = await fetch("ajax/richieste.php?op=getAreaPersonale");
-        let result = await response.json();
+        let txt = await response.text();
+        let result = JSON.parse(txt);
         if(result["status"] == "OK")
             document.getElementById("pagina").innerHTML = result["data"];
     }
@@ -203,8 +210,8 @@ async function eliminaNotizia(title, description, url, urlToImage, button, salva
     }
 
     const response = await fetch(`ajax/richieste.php?op=eliminaNotizia&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&url=${encodeURIComponent(url)}&urlToImage=${encodeURIComponent(urlToImage)}`);
-    const result = await response.json();
-
+    const txt = await response.text();
+    const result = JSON.parse(txt);
     if (result["status"] === "OK") {
         button.textContent = "Aggiungi ai preferiti";
         button.removeEventListener('click', eliminaHandler);
@@ -224,7 +231,8 @@ async function getNotizieSalvate()
     else
     {
         let response = await fetch("ajax/richieste.php?op=getSavedNews");
-        let result = await response.json();
+        let txt = await response.text();
+        let result = JSON.parse(txt);
         if(result["status"] == "OK")
         {
             document.getElementById("parteSopra").style.display = "none";
@@ -261,7 +269,8 @@ async function getDatiUtente()
     else
     {
         let response = await fetch("ajax/richieste.php?op=getNomeCognome");
-        let result = await response.json();
+        let txt = await response.text();
+        let result = JSON.parse(txt);
         if(result["status"] == "OK")
         {
             document.getElementById("nome").value = result["data"]["nome"];
@@ -281,7 +290,8 @@ async function modificaDatiPersonali()
         let nome = document.getElementById("nome").value;
         let cognome = document.getElementById("cognome").value;
         let response = await fetch(`ajax/richieste.php?op=modificaDatiPersonali&nome=${nome}&cognome=${cognome}`);
-        let result = await response.json();
+        let txt = await response.text();
+        let result = JSON.parse(txt);
         if(result["status"] == "OK")
         {            
             location.reload();
@@ -308,7 +318,8 @@ async function cambiaPassword()
         let password = document.getElementById("password").value;
         let newPassword = document.getElementById("confirm-password").value;
         let response = await fetch(`ajax/richieste.php?op=cambiaPassword&newPassword=${password}&confirmPassword=${newPassword}&oldPassword=${vecchiaPassword}`);
-        let result = await response.json();
+        let txt = await response.text();
+        let result = JSON.parse(txt);
         if(result["status"] == "OK")
         {
             alert("Modifica avvenuta con successo!");
@@ -334,4 +345,62 @@ function mostraAlert(messaggio)
     document.getElementById("testoError").innerText = messaggio;
     alertBox.style.display = "block";
     alertBox.classList.add("show");
+}
+
+async function getNomeCognomeUtente()
+{
+    let response = await fetch("ajax/richieste.php?op=getNomeCognome");
+    let txt = await response.text();
+    let result = JSON.parse(txt);
+    if(result["status"] == "OK")
+    {
+        let nome = result["data"]["nome"];
+        let cognome = result["data"]["cognome"];
+        document.querySelector(".welcome-message").innerHTML = `Benvenuto, ${nome} ${cognome}!`;
+    }
+}
+
+async function registrazione()
+{
+    let nome = document.getElementById("nome").value;
+    let cognome = document.getElementById("cognome").value;
+    let email = document.getElementById("register-email").value;
+    let password = document.getElementById("register-password").value;
+    let confirmPassword = document.getElementById("confirm-password").value;
+
+    let response = await fetch(`ajax/richieste.php?op=registrazione&nome=${nome}&cognome=${cognome}&email=${email}&password=${password}&confirmPassword=${confirmPassword}`);
+    let txt = await response.text();
+    let result = JSON.parse(txt);
+    if(result["status"] == "OK")
+    {
+        window.location.href = "index.php";
+    }
+    else
+    {
+        let errorDiv = document.getElementById("register-error");
+        errorDiv.innerHTML = result["msg"];
+        errorDiv.style.display = "block";
+    }
+    
+    
+}
+
+async function login()
+{
+    let email = document.getElementById("login-email").value;
+    let password = document.getElementById("login-password").value;
+
+    let response = await fetch(`ajax/richieste.php?op=login&email=${email}&password=${password}`);
+    let txt = await response.text();
+    let result = JSON.parse(txt);
+    if(result["status"] == "OK")
+    {
+        window.location.href = "index.php";
+    }
+    else
+    {
+        let errorDiv = document.getElementById("login-error");
+        errorDiv.innerHTML = result["msg"];
+        errorDiv.style.display = "block";
+    }
 }
