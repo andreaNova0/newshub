@@ -115,27 +115,22 @@
             $email = $_GET["email"];
             $password = $_GET["password"];
             
-            if(!$db->checkEmail($email))
+            
+            $result = $db->login($email, $password);
+            if($result != -1)
             {
-                $result = $db->login($email, $password);
-                if($result != -1)
-                {
-                    $_SESSION["user"] = $result;
-                    $ret["status"] = "OK";
-                    $ret["msg"] = "Login avvenuto con successo!";
-                }
-                else
-                {
-                    $ret["status"] = "ERR";
-                    $ret["msg"] = "Password errata.";
-                }
-                
+                $_SESSION["user"] = $result;
+                $ret["status"] = "OK";
+                $ret["msg"] = "Login avvenuto con successo!";
             }
             else
             {
                 $ret["status"] = "ERR";
-                $ret["msg"] = "Email non registrata.";
+                $ret["msg"] = "Credenziali errate.";
             }
+                
+            
+         
             return $ret;
         }
     }
