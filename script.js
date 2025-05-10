@@ -37,7 +37,6 @@ async function RenderLatestNews(news)
         button.dataset.url = article.url;
         button.dataset.image = article.urlToImage;
     
-        // Funzioni persistenti da poter aggiungere/rimuovere
         const salvaHandler = async () => {
             await salvaNotizia(article.title, article.description, article.url, article.urlToImage, button, salvaHandler, eliminaHandler);
         };
@@ -143,29 +142,6 @@ async function checkLog()
     
 }
 
-function getSalvaListener(button) {
-    return async function salvaHandler() {
-        await salvaNotizia(
-            button.dataset.title,
-            button.dataset.description,
-            button.dataset.url,
-            button.dataset.image,
-            button
-        );
-    }
-}
-
-function getEliminaListener(button) {
-    return async function eliminaHandler() {
-        await eliminaNotizia(
-            button.dataset.title,
-            button.dataset.description,
-            button.dataset.url,
-            button.dataset.image,
-            button
-        );
-    }
-}
 
 async function salvaNotizia(title, description, url, urlToImage, button, salvaHandler, eliminaHandler) {
     const isLogged = await checkLog();
@@ -321,9 +297,8 @@ async function cambiaPassword()
         let txt = await response.text();
         let result = JSON.parse(txt);
         if(result["status"] == "OK")
-        {
-            alert("Modifica avvenuta con successo!");
-            location.reload();
+        {            
+            mostraAlert("Modifica avvenuta con successo!");
         }
         else
         {

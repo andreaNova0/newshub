@@ -56,7 +56,7 @@ if (!isset($_SESSION["user"])) {
     
   </div>
   <div class="go-home">
-      <a href="index.php">Torna alla Home</a>
+      <a href="index.php">Torna alla pagina principale</a>
     </div>
   <div id="container">
 
@@ -64,7 +64,6 @@ if (!isset($_SESSION["user"])) {
 
   <div class="form-wrapper" id="form-wrapper" style="display: none;">
   <div class="form-container" id="form-container">
-    <!-- Alert -->
     <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-message" style="display: none;">
       <div id="testoError"></div>
       <button type="button" class="close" onclick="nascondiAlert()" aria-label="Close">
@@ -74,7 +73,6 @@ if (!isset($_SESSION["user"])) {
 
     <h2>Modifica Profilo</h2>
 
-    <!-- Sezione Dati Personali -->
     <label for="nome">Nome</label>
     <input type="text" id="nome" name="nome" required>
 
@@ -86,7 +84,6 @@ if (!isset($_SESSION["user"])) {
 
     <hr style="margin: 2rem 0;">
 
-    <!-- Sezione Cambio Password -->
     <label for="old-password">Vecchia Password</label>
     <input type="password" id="old-password" name="old-password" required>
 
