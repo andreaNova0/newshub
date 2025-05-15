@@ -346,6 +346,17 @@
         return $ret;
     }
 
+    function utf8ize($data) {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = utf8ize($value);
+            }
+        } elseif (is_string($data)) {
+            return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
+        }
+        return $data;
+    }
+
     function getSavedNews()
     {
         $ret = [];
@@ -356,17 +367,23 @@
             return $ret;
         }
         $db = gestioneDb::getInstance();
+       
         $result = $db->getSavedNews($_SESSION["user"]);
-        if($result != null)
+        if(!is_null($result))
         {
+            $result = utf8ize($result);
+
             $ret["status"] = "OK";
             $ret["data"] = $result;
+            return ($ret);
         }
         else
         {
             $ret["status"] = "ERR";
             $ret["msg"] = "Nessuna notizia salvata.";
+            return $ret;
         }
+     
         return $ret;
     }
 
